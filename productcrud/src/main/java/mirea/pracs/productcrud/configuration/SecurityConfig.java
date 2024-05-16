@@ -51,6 +51,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(manager -> manager
             .requestMatchers("/products").authenticated()
             .requestMatchers("/product-types").authenticated()
+            .requestMatchers("/reviews").authenticated()
             .anyRequest().permitAll()
         )
         .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

@@ -3,7 +3,7 @@ package mirea.pracs.productcrud.controller;
 import mirea.pracs.productcrud.dto.auth.SignInRequestDto;
 import mirea.pracs.productcrud.dto.auth.SignInResponseDto;
 import mirea.pracs.productcrud.dto.auth.SignUpRequestDto;
-import mirea.pracs.productcrud.entity.User;
+import mirea.pracs.productcrud.dto.user.UserGetDto;
 import mirea.pracs.productcrud.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/sign-up")
-  public ResponseEntity<User> signUp(@RequestBody SignUpRequestDto request) {
+  public ResponseEntity<UserGetDto> signUp(@RequestBody SignUpRequestDto request) {
     return authenticationService.createNewUser(request);
   }
 
