@@ -22,11 +22,16 @@ public class ProductService {
   private final ProductRepository productRepository;
   private final ProductConverter productConverter;
   private final ProductTypeConverter productTypeConverter;
+  private final ImageService imageService;
 
-  public ProductService(ProductRepository productRepository, ProductConverter productConverter, ProductTypeConverter productTypeConverter) {
+  public ProductService(
+      ProductRepository productRepository, ProductConverter productConverter, ProductTypeConverter productTypeConverter,
+      ImageService imageService
+  ) {
     this.productRepository = productRepository;
     this.productConverter = productConverter;
     this.productTypeConverter = productTypeConverter;
+    this.imageService = imageService;
   }
 
   public ProductWrapperDto getProducts() {
@@ -52,10 +57,18 @@ public class ProductService {
     );
   }
 
+  public Product getProductEntity(Long productId) {
+    return productRepository.findById(productId)
+        .orElseThrow(() -> new NotFoundException(
+            String.format("Product with id %d not found", productId)
+        ));
+  }
+
   @PreAuthorize("{hasAuthority('MANAGER')}")
   @Transactional
-  public PostResponse createProduct(ProductPostDto productPostDto, ProductType productType, String imageSrc) {
-    Product product = productConverter.convertToProduct(productPostDto, productType, imageSrc);
+  public PostResponse createProduct(ProductPostDto productPostDto, ProductType productType) {
+    var imageSrc = imageService.saveImage(productPostDto.getImage());
+    var product = productConverter.convertToProduct(productPostDto, productType, imageSrc);
     product.setImageSrc(imageSrc);
     productRepository.save(product);
     return new PostResponse(product.getProductId());
@@ -72,8 +85,13 @@ public class ProductService {
 
   @PreAuthorize("{hasAuthority('MANAGER')}")
   @Transactional
-  public void deleteProduct(Long productId) {
+  public String deleteProduct(Long productId) {
+    var product = productRepository.findById(productId)
+        .orElseThrow(() -> new NotFoundException(
+            String.format("Product with id %d not found", productId)
+        ));
     productRepository.deleteById(productId);
+    return product.getImageSrc();
   }
 
 }

@@ -9,12 +9,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Review {
 
   @Id
@@ -32,5 +36,8 @@ public class Review {
   @ManyToOne
   @JoinColumn(name = "product_id")
   private Product product;
+  @ManyToOne
+  @JoinColumn(name = "author_id")
+  private User author;
 
 }

@@ -1,7 +1,9 @@
 package mirea.pracs.productcrud.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,16 @@ public class ImageService {
       throw new InternalServerErrorException(e.getMessage());
     }
     return fileName;
+  }
+
+  public void deleteImage(String imagePath) {
+    var image = new File(imagePath);
+    try {
+      Files.delete(image.toPath());
+      log.info("Image {} was deleted", image.getAbsolutePath());
+    } catch (IOException e) {
+      log.warn("Image {} was not deleted", image.getAbsolutePath());
+    }
   }
 
 }
