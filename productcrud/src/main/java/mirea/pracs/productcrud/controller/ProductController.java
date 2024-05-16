@@ -44,9 +44,8 @@ public class ProductController {
 
   @PostMapping(consumes = {"multipart/form-data"})
   public ResponseEntity<PostResponse> postProduct(@ModelAttribute ProductPostDto productPostDto) {
-    var imageSrc = imageService.saveImage(productPostDto.getImage());
     var productType = productTypeService.getProductTypeEntity(productPostDto.getProductTypeId());
-    var postResponse = productService.createProduct(productPostDto, productType, imageSrc);
+    var postResponse = productService.createProduct(productPostDto, productType);
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(postResponse);
@@ -70,7 +69,8 @@ public class ProductController {
 
   @DeleteMapping("/{productId}")
   public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
-    productService.deleteProduct(productId);
+    var imageSrc = productService.deleteProduct(productId);
+    imageService.deleteImage(imageSrc);
     return ResponseEntity
         .status(HttpStatus.OK)
         .build();

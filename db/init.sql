@@ -17,16 +17,6 @@ CREATE TABLE IF NOT EXISTS product
     product_type_id   BIGINT REFERENCES product_type (product_type_id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS review
-(
-    review_id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    rating            DOUBLE PRECISION,
-    description       VARCHAR(255),
-    header            VARCHAR(255),
-    updated_timestamp TIMESTAMP,
-    product_id        BIGINT REFERENCES product (product_id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS user_account
 (
     user_id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -35,6 +25,17 @@ CREATE TABLE IF NOT EXISTS user_account
                                           ((ARRAY ['ADMIN'::character varying, 'MANAGER'::character varying, 'USER'::character varying])::text[])),
     username          VARCHAR(255),
     updated_timestamp TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS review
+(
+    review_id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    rating            DOUBLE PRECISION,
+    description       VARCHAR(255),
+    header            VARCHAR(255),
+    updated_timestamp TIMESTAMP,
+    author_id         BIGINT REFERENCES user_account (user_id) ON DELETE SET NULL,
+    product_id        BIGINT REFERENCES product (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS shop_order

@@ -1,14 +1,17 @@
 package mirea.pracs.productcrud.service;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import mirea.pracs.productcrud.dto.auth.SignUpRequestDto;
 import mirea.pracs.productcrud.entity.User;
 import mirea.pracs.productcrud.entity.enums.UserRole;
 import mirea.pracs.productcrud.exceptions.ForbiddenException;
+import mirea.pracs.productcrud.exceptions.InternalServerErrorException;
 import mirea.pracs.productcrud.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Component
+@Slf4j
 public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
@@ -34,10 +38,18 @@ public class UserService implements UserDetailsService {
     return userRepository.findByUsername(username);
   }
 
-  public User findByPrincipal(Principal principal){
-    List<User> users = userRepository.findByUsername(principal.getName());
+  public User findOneByAuthentication(Authentication authentication) {
+    if (Objects.isNull(authentication)) {
+      throw new ForbiddenException("User has not authorized");
+    }
+    String username = authentication.getName();
+    log.info("Username is '{}'", username);
+    var users = userRepository.findByUsername(username);
     if (users.isEmpty()) {
-      throw new ForbiddenException("Bad token");
+      throw new ForbiddenException("User with specified username not found");
+    }
+    if (users.size() > 1) {
+      throw new InternalServerErrorException("Several users with specified username");
     }
     return users.getFirst();
   }
