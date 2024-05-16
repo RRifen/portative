@@ -1,9 +1,9 @@
 package mirea.pracs.productcrud.repository;
 
-import mirea.pracs.productcrud.entity.Product;
+import mirea.pracs.productcrud.entity.OrderRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface OrderRecordRepository extends JpaRepository<OrderRecord, Long> {
 }
