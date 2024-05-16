@@ -47,10 +47,12 @@ CREATE TABLE IF NOT EXISTS shop_order
     user_id           BIGINT REFERENCES user_account (user_id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS order_product
+CREATE TABLE IF NOT EXISTS order_record
 (
-    order_id   BIGINT REFERENCES shop_order (order_id) ON DELETE CASCADE,
-    product_id BIGINT REFERENCES product (product_id) ON DELETE CASCADE
+    order_record_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    quantity        INT DEFAULT 1,
+    order_id        BIGINT REFERENCES shop_order (order_id) ON DELETE CASCADE,
+    product_id      BIGINT REFERENCES product (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS support_request
