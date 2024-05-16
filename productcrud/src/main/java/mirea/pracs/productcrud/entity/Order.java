@@ -28,6 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Order {
 
   @Id
+  @Column(name = "shop_order_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long orderId;
   @Column

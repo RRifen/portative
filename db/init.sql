@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS review
 
 CREATE TABLE IF NOT EXISTS shop_order
 (
-    order_id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    shop_order_id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     updated_timestamp TIMESTAMP,
     address           VARCHAR(255),
     order_status      VARCHAR(255) CHECK ((order_status)::text = ANY
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS order_record
 (
     order_record_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     quantity        INT DEFAULT 1,
-    order_id        BIGINT REFERENCES shop_order (order_id) ON DELETE CASCADE,
+    order_id        BIGINT REFERENCES shop_order (shop_order_id) ON DELETE CASCADE,
     product_id      BIGINT REFERENCES product (product_id) ON DELETE CASCADE
 );
 

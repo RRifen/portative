@@ -49,7 +49,7 @@ public class ProductService {
     var product = productRepository
         .findById(productId)
         .orElseThrow(() -> new NotFoundException(
-            String.format("Product with id %d not foung", productId)
+            String.format("Product with id %d not found", productId)
         ));
     return productConverter.convertToProductGetDto(
         product,
