@@ -19,3 +19,5 @@ jwt:
   lifetime:
     access: 1d
     refresh: 30d
+yandex:
+  token: #Your token
