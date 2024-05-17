@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS review
 
 CREATE TABLE IF NOT EXISTS shop_order
 (
-    shop_order_id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    shop_order_id     BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     updated_timestamp TIMESTAMP,
     address           VARCHAR(255),
     order_status      VARCHAR(255) CHECK ((order_status)::text = ANY
@@ -63,4 +63,20 @@ CREATE TABLE IF NOT EXISTS support_request
     description        VARCHAR(255),
     theme              VARCHAR(255),
     user_id            BIGINT REFERENCES user_account (user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ai_thread
+(
+    ai_thread_id      BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    created_timestamp TIMESTAMP,
+    user_id           BIGINT REFERENCES user_account (user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ai_message
+(
+    ai_message_id     BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    role              VARCHAR(255),
+    message           TEXT,
+    created_timestamp TIMESTAMP,
+    ai_thread_id      BIGINT REFERENCES ai_thread (ai_thread_id) ON DELETE CASCADE
 );
