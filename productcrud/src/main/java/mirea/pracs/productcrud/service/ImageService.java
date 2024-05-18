@@ -21,16 +21,17 @@ public class ImageService {
 
   public String saveImage(MultipartFile image) {
     String[] fileParts = Objects.requireNonNull(image.getOriginalFilename()).split("\\.");
-    String fileName = String.format("%s/%s.%s", imagesPath, UUID.randomUUID(), fileParts[fileParts.length - 1]);
+    String localFilePath = String.format("%s.%s", UUID.randomUUID(), fileParts[fileParts.length - 1]);
+    String absoluteFilePath = String.format("%s/%s", imagesPath, localFilePath);
     try {
-      FileOutputStream fos = new FileOutputStream(fileName);
+      FileOutputStream fos = new FileOutputStream(absoluteFilePath);
       fos.write(image.getBytes());
       fos.close();
     } catch (IOException e) {
       log.error(e.getMessage());
       throw new InternalServerErrorException(e.getMessage());
     }
-    return fileName;
+    return localFilePath;
   }
 
   public void deleteImage(String imagePath) {
