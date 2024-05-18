@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/chat-gpt/threads")
+@RequestMapping("/ai/threads")
 public class GptController {
 
   private final UserService userService;
