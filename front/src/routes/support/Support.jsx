@@ -15,7 +15,7 @@ import Markdown from "react-markdown";
 
 const Support = () => {
     const [selectedThread, setSelectedThread] = useState(0);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
     const [threads, setThreads] = useState([]);
 
     useEffect(() => {

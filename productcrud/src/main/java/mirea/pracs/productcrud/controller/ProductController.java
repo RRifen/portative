@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
@@ -37,8 +38,12 @@ public class ProductController {
   }
 
   @GetMapping
-  public ResponseEntity<ProductWrapperDto> getProducts() {
-    var productWrapperDto = productService.getProducts();
+  public ResponseEntity<ProductWrapperDto> getProducts(
+      @RequestParam(name = "search", required = false) String search
+  ) {
+    var productWrapperDto = search != null ?
+        productService.getProducts(search) :
+        productService.getProducts();
     return ResponseEntity.ok(productWrapperDto);
   }
 

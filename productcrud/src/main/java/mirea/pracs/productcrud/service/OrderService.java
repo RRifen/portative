@@ -62,6 +62,13 @@ public class OrderService {
         .stream()
         .map(recordPostDto -> {
           var product = productService.getProductEntity(recordPostDto.getProductId());
+          var newQuantity = product.getQuantityInStock() - recordPostDto.getQuantity();
+          if (newQuantity < 0) {
+            throw new ForbiddenException("Too many quantity");
+          }
+          else {
+            product.setQuantityInStock(newQuantity);
+          }
           return new ImmutablePair<>(recordPostDto, product);
         })
         .toList();
