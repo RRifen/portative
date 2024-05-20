@@ -3,6 +3,7 @@ import React from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import axios from "axios";
 import {DELETE_PRODUCT} from "../../constants/URLS";
+import {ProductSearchingForm} from "./ProductSearchingForm";
 
 const ProductsContainer = ({products, setProducts}) => {
 
@@ -53,6 +54,7 @@ const ProductsContainer = ({products, setProducts}) => {
 
     return (
         <Container>
+            <ProductSearchingForm setProducts={setProducts}/>
             {getProductRows()}
         </Container>
     );

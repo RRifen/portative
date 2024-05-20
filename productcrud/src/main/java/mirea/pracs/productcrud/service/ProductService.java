@@ -94,4 +94,15 @@ public class ProductService {
     return product.getImageSrc();
   }
 
+  public ProductWrapperDto getProducts(String search) {
+    var productPairs = productRepository.findByNameContaining(search)
+        .stream()
+        .map(product -> new ImmutablePair<>(
+            product,
+            productTypeConverter.convertToProductTypeGetDto(product.getProductType())
+        ))
+        .toList();
+    return productConverter.convertToProductWrapperDto(productPairs);
+  }
+
 }

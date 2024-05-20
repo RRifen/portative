@@ -16,7 +16,7 @@ public class RestClientConfig {
     return RestClient.builder()
         .defaultHeader(
             "Authorization",
-            String.format("Bearer %s", yandexGptApiToken)
+            String.format("Api-Key %s", yandexGptApiToken)
         )
         .build();
   }
