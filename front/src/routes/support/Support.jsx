@@ -57,7 +57,7 @@ const Support = () => {
     const getInitialMessage = () => {
         return createBotMessage(
             new Date().toLocaleTimeString(),
-            "Напишите ваще сообщение в чат..."
+            "Напишите ваше сообщение в чат..."
         );
     }
 
