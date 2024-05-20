@@ -1,6 +1,24 @@
 version: '3.8'
 
-services:  
+services:
+  backend:
+    build: 
+      context: "./productcrud"
+    container_name: backend
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-products}"
+      IMAGES_PATH: "/opt/app/images"
+    ports:
+      - "${BACK_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: "./front"
+    container_name: frontend
+    ports:
+      - "${BACK_PORT:-3000}:3000"  
   db:
     image: postgres:16.2-alpine3.19
     environment:
@@ -14,5 +32,10 @@ services:
     ports:
       - "5433:5432"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 volumes:
   postgres_products:
